@@ -38,8 +38,8 @@ Find all pending files in `raw/` not yet ingested, then ingest them — one at a
 
 1. **Find all pending files**
    ```bash
-   # All files in raw/ (excluding assets/)
-   find $WIKI_ROOT/raw -maxdepth 1 -type f | sort -t/ -k1 | grep -v assets
+   # All files in raw/ recursively (excluding assets/)
+   find $WIKI_ROOT/raw -type f | sort | grep -v assets
    
    # Check which are already ingested
    grep "^## \[" $WIKI_ROOT/wiki/log.md | grep "ingest"
@@ -242,8 +242,8 @@ grep "^## \[" $WIKI/log.md | tail -10
 # Raw sources not yet ingested
 echo ""
 echo "=== Raw files not yet ingested ==="
-# List raw/ files, check each against log.md
-for f in $(ls $WIKI_ROOT/raw/ | grep -v assets); do
+# List raw/ files recursively, check each against log.md
+for f in $(find $WIKI_ROOT/raw -type f | grep -v assets | xargs -I{} basename {}); do
   if ! grep -q "$f" $WIKI/log.md 2>/dev/null; then
     echo "  PENDING: $f"
   fi
