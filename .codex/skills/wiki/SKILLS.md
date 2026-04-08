@@ -15,15 +15,15 @@ Handles four slash commands for the LLM Wiki system. Each command has a clear wo
 
 ## Assumptions
 
-- Wiki root is the current working directory, or the closest parent directory containing `AGENTS.md` + `wiki/` + `raw/`.
+- Wiki root is the current working directory, or the closest parent directory containing `AGENTS.md` (or `CLAUDE.md`) + `wiki/` + `raw/`.
 - If no wiki root is found, ask the user where their wiki lives before proceeding.
-- All wiki pages are `.md` files. The wiki follows the structure defined in `AGENTS.md` — read it before any operation.
+- All wiki pages are `.md` files. The wiki follows the structure defined in `AGENTS.md` / `CLAUDE.md` — read it before any operation if not already in context.
 
 ## Detecting wiki root
 
 ```bash
-# Walk up from cwd looking for AGENTS.md + wiki/ + raw/
-find . -maxdepth 3 -name "AGENTS.md" | head -1
+# Walk up from cwd looking for AGENTS.md (or CLAUDE.md) + wiki/ + raw/
+find . -maxdepth 3 \( -name "AGENTS.md" -o -name "CLAUDE.md" \) | head -1
 ```
 
 If found, set `WIKI_ROOT` to that directory. If not found, ask the user.
@@ -102,7 +102,7 @@ Full ingest workflow for a single source file.
 
 ### Steps
 
-1. **Read AGENTS.md** to load schema conventions before touching any wiki files.
+1. **Read `AGENTS.md` / `CLAUDE.md`** to load schema conventions before touching any wiki files. Skip if already in context (Claude Code auto-loads `CLAUDE.md`).
 
 2. **Read the source**
    - Text files (`.md`, `.txt`, `.html`): read directly.

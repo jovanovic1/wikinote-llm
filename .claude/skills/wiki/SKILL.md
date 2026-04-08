@@ -1,1 +1,1 @@
-.codex/skills/wiki/SKILLS.md
+../../../.codex/skills/wiki/SKILLS.md
